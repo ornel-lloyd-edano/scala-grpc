@@ -19,10 +19,10 @@ object DocumentClientApp extends App {
   val blockingStub = DocumentServiceGrpc.blockingStub(channel)
   val asyncStub = DocumentServiceGrpc.stub(channel)
 
-  /*
-    create document with synchronous call
-    consume createDocument unary api in the grpc service
-   */
+  /**
+    * create document with synchronous call
+    * consume createDocument unary api in the grpc service
+    */
   def createDocument(): Unit = {
     val request = DocumentCreateMessage("1", "blob1")
     println(s"[unary] blocking create document $request")
