@@ -19,7 +19,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 WORKDIR /app
 
 # copy file
-ADD target/scala-2.11/vip-explorer-assembly-1.0.jar explorer.jar
+ADD target/scala-2.11/xrpc-assembly-1.0.jar xrpc.jar
 #ADD *.jar aplos.jar
 
 # logs volume
@@ -30,4 +30,4 @@ VOLUME ["/app/.logs"]
 VOLUME ["/app/.keys"]
 
 # command
-ENTRYPOINT [ "java", "-jar", "/app/explorer.jar" ]
+ENTRYPOINT [ "java", "-jar", "/app/xrpc.jar" ]
