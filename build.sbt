@@ -7,9 +7,6 @@ scalaVersion := "2.11.7"
 libraryDependencies ++= {
 
   Seq(
-    "org.slf4j"                       % "slf4j-api"                       % "1.7.5",
-    "ch.qos.logback"                  % "logback-classic"                 % "1.0.9",
-    "org.scalatest"                   % "scalatest_2.11"                  % "2.2.1"               % "test",
     "io.grpc"                         % "grpc-netty"                      % com.trueaccord.scalapb.compiler.Version.grpcJavaVersion,
     "io.grpc"                         % "grpc-services"                   % com.trueaccord.scalapb.compiler.Version.grpcJavaVersion,
     "com.trueaccord.scalapb"          %% "scalapb-runtime"                % com.trueaccord.scalapb.compiler.Version.scalapbVersion % "protobuf",
@@ -22,10 +19,7 @@ PB.targets in Compile := Seq(
   scalapb.gen() -> (sourceManaged in Compile).value
 )
 
-resolvers ++= Seq(
-  "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
-)
-
+// define merge conflict strategy to netty 
 assemblyMergeStrategy in assembly := {
   case PathList(ps @ _*) if ps.last endsWith ".properties" => MergeStrategy.first
   case "module-info.class" => MergeStrategy.discard

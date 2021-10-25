@@ -2,8 +2,6 @@ package com.rahasak.xrpc
 
 import com.rahasak.proto.document.DocumentServiceGrpc.DocumentService
 import com.rahasak.proto.document._
-import io.grpc.ServerBuilder
-import io.grpc.protobuf.services.ProtoReflectionService
 import io.grpc.stub.StreamObserver
 
 import scala.concurrent.Future
@@ -58,8 +56,6 @@ class DocumentServiceImpl extends DocumentService {
     val requestObserver = new StreamObserver[DocumentGetMessage] {
       override def onNext(value: DocumentGetMessage) = {
         println(s"[bi-stream] stream documents $value")
-
-        responseObserver.onNext(DocumentReplyMessage())
       }
 
       override def onError(t: Throwable) = {
@@ -71,10 +67,25 @@ class DocumentServiceImpl extends DocumentService {
       }
     }
 
+    val documents = List(
+      ("1", "blob1"),
+      ("2", "blob2"),
+      ("3", "blob4"),
+      ("4", "blob1")
+    )
+
+    documents.foreach { d =>
+      responseObserver.onNext(DocumentReplyMessage(d._1, d._2))
+      Thread.sleep(1000)
+    }
+
     requestObserver
   }
 
 }
+
+import io.grpc.ServerBuilder
+import io.grpc.protobuf.services.ProtoReflectionService
 
 object DocumentServiceApp extends App {
 
