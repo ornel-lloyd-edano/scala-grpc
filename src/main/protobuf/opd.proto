@@ -1,0 +1,57 @@
+syntax="proto3";
+
+package sg.smarterhealth.proto.v1;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+message InitiateOPDRequest {
+    string clientName = 1;
+    int64 specialistId = 2;
+    int64 specialistFacilityId = 3;
+    string specialistSpecialty = 4;
+    string specialistCountry = 5;
+}
+
+message InitiateOPDResponse {
+    int64 id = 1;
+    string referenceNo = 2;
+    int64 unitId = 3;
+}
+
+message ScheduleAppointmentRequest {
+    string refNo = 1;
+    repeated AppointmentSlot openSchedules = 2;
+}
+
+message AppointmentSlot {
+    google.protobuf.Timestamp startAt = 1;
+    google.protobuf.Timestamp endAt = 2;
+    google.protobuf.Timestamp expireAt = 3;
+    int32 priority = 4;
+}
+
+message OPDFilters {
+    string country = 1;
+    google.protobuf.Timestamp dateFrom = 2;
+    google.protobuf.Timestamp dateTo = 3;
+}
+
+message OPDAppointmentsPaginatedResponse {
+    repeated OPDAppointment data = 1;
+    int32 size = 2;
+    int32 page = 3;
+}
+
+message OPDAppointment {
+    int32 id = 1;
+    string refNo = 2;
+    int32 patientId = 3;
+    int32 specialistId = 4;
+    google.protobuf.Timestamp createdAt = 5;
+}
+
+service OPDAppointmentService {
+    rpc initiateOPDAppointment(InitiateOPDRequest) returns (InitiateOPDResponse);
+    rpc scheduleAppointment(ScheduleAppointmentRequest) returns (google.protobuf.Empty);
+    rpc getOPDAppointments(OPDFilters) returns (stream OPDAppointmentsPaginatedResponse);
+}
